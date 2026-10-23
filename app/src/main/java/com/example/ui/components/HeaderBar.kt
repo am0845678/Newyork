@@ -69,81 +69,123 @@ fun HeaderBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 14.dp, vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left Action Buttons: Tactical Add (+), File, Clipboard, and "تم دلخواه"
+            // Right (Start in RTL): Brand & Status with Crown Emblem
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.weight(1f, fill = false)
             ) {
-                // Add Subscription Button (+)
+                // Tactical Crown Box
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(ParsTheme.palette.cardBg)
-                        .border(1.dp, ParsTheme.palette.border, RoundedCornerShape(10.dp))
-                        .clickable(onClick = onAddClick)
-                        .testTag("header_add_button"),
+                        .size(38.dp)
+                        .clip(RoundedCornerShape(9.dp))
+                        .background(
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    ParsTheme.palette.cardBg,
+                                    ParsTheme.palette.dimColor
+                                )
+                            )
+                        )
+                        .border(1.2.dp, ParsTheme.palette.glowColor.copy(alpha = 0.6f), RoundedCornerShape(9.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "افزودن اشتراک",
-                        tint = ParsTheme.palette.glowColor,
-                        modifier = Modifier.size(20.dp)
+                    ParsPingCrown(
+                        modifier = Modifier.size(22.dp),
+                        primaryColor = ParsTheme.palette.primaryAccent,
+                        glowColor = ParsTheme.palette.glowColor,
+                        secondaryColor = ParsTheme.palette.secondaryDark
                     )
                 }
 
-                // Import WireGuard File Button (.conf)
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(ParsTheme.palette.cardBg)
-                        .border(1.dp, Color(0xFF0284C7).copy(alpha = 0.6f), RoundedCornerShape(10.dp))
-                        .clickable(onClick = onImportFileClick)
-                        .testTag("header_import_file_button"),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.FileOpen,
-                        contentDescription = "افزودن فایل وایرگارد",
-                        tint = Color(0xFF38BDF8),
-                        modifier = Modifier.size(19.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.width(8.dp))
 
-                // Clipboard Paste Button
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(ParsTheme.palette.cardBg)
-                        .border(1.dp, ParsTheme.palette.border, RoundedCornerShape(10.dp))
-                        .clickable(onClick = onClipboardClick)
-                        .testTag("header_clipboard_button"),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Assignment,
-                        contentDescription = "چسباندن از کلیپبورد",
-                        tint = ParsTheme.palette.textSecondary,
-                        modifier = Modifier.size(19.dp)
-                    )
-                }
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "PARS PING",
+                            color = ParsTheme.palette.textPrimary,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Black,
+                            fontFamily = FontFamily.SansSerif,
+                            letterSpacing = 1.sp,
+                            maxLines = 1
+                        )
 
+                        Spacer(modifier = Modifier.width(5.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(ParsTheme.palette.primaryAccent.copy(alpha = 0.25f))
+                                .border(0.8.dp, ParsTheme.palette.glowColor.copy(alpha = 0.7f), RoundedCornerShape(4.dp))
+                                .padding(horizontal = 4.dp, vertical = 1.dp)
+                        ) {
+                            Text(
+                                text = "PRO",
+                                color = ParsTheme.palette.glowColor,
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.Black,
+                                letterSpacing = 0.8.sp
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    // Status Row with Dot
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        val statusColor = when (vpnStatus) {
+                            VpnStatus.CONNECTED -> ParsTheme.palette.connectedGreen
+                            VpnStatus.CONNECTING -> ParsTheme.palette.glowColor
+                            VpnStatus.FAILED -> ParsTheme.palette.errorRed
+                            else -> ParsTheme.palette.textMuted
+                        }
+                        val statusLabel = when (vpnStatus) {
+                            VpnStatus.CONNECTED -> "محافظت فعال"
+                            VpnStatus.CONNECTING -> "در حال اتصال..."
+                            VpnStatus.FAILED -> "خطای اتصال"
+                            else -> "آماده به کار"
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(6.dp)
+                                .clip(CircleShape)
+                                .background(statusColor)
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(
+                            text = statusLabel,
+                            color = statusColor,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.width(6.dp))
+
+            // Left (End in RTL): Action Buttons (Clean, spacious, zero overlapping)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
                 // "تم دلخواه" Settings Button
                 Box(
                     modifier = Modifier
-                        .height(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(9.dp))
                         .background(ParsTheme.palette.cardBg)
-                        .border(1.2.dp, ParsTheme.palette.glowColor.copy(alpha = 0.5f), RoundedCornerShape(10.dp))
+                        .border(1.dp, ParsTheme.palette.glowColor.copy(alpha = 0.6f), RoundedCornerShape(9.dp))
                         .clickable(onClick = onThemeClick)
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = 8.dp)
                         .testTag("header_theme_button"),
                     contentAlignment = Alignment.Center
                 ) {
@@ -155,114 +197,51 @@ fun HeaderBar(
                             imageVector = Icons.Default.Palette,
                             contentDescription = "تم دلخواه",
                             tint = ParsTheme.palette.glowColor,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                         Text(
                             text = "تم دلخواه",
                             color = ParsTheme.palette.textPrimary,
-                            fontSize = 11.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
                 }
-            }
 
-            // Right: Brand & Tactical Protection Status
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.End
-                ) {
-                    // Custom Tactical Typographic Brand Treatment
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(ParsTheme.palette.primaryAccent.copy(alpha = 0.2f))
-                                .border(0.8.dp, ParsTheme.palette.glowColor.copy(alpha = 0.6f), RoundedCornerShape(4.dp))
-                                .padding(horizontal = 5.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = "PRO",
-                                color = ParsTheme.palette.glowColor,
-                                fontSize = 9.sp,
-                                fontWeight = FontWeight.Black,
-                                letterSpacing = 1.sp
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.width(6.dp))
-
-                        Text(
-                            text = "PARS PING",
-                            color = ParsTheme.palette.textPrimary,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Black,
-                            fontFamily = FontFamily.SansSerif,
-                            letterSpacing = 1.2.sp
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    // Status Indicator Row
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val statusColor = when (vpnStatus) {
-                            VpnStatus.CONNECTED -> ParsTheme.palette.connectedGreen
-                            VpnStatus.CONNECTING -> ParsTheme.palette.glowColor
-                            VpnStatus.FAILED -> ParsTheme.palette.errorRed
-                            else -> ParsTheme.palette.textMuted
-                        }
-                        val statusLabel = when (vpnStatus) {
-                            VpnStatus.CONNECTED -> "محافظت فعال // SECURE"
-                            VpnStatus.CONNECTING -> "در حال اتصال..."
-                            VpnStatus.FAILED -> "خطای اتصال // ALERT"
-                            else -> "غیرفعال // STANDBY"
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .size(6.dp)
-                                .clip(CircleShape)
-                                .background(statusColor)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = statusLabel,
-                            color = statusColor,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Medium,
-                            letterSpacing = 0.3.sp
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.width(10.dp))
-
-                // Preserved Tactical Cyber Crown Emblem
+                // Add Subscription Button (+)
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    ParsTheme.palette.cardBg,
-                                    ParsTheme.palette.dimColor
-                                )
-                            )
-                        )
-                        .border(1.2.dp, ParsTheme.palette.glowColor.copy(alpha = 0.6f), RoundedCornerShape(10.dp)),
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(9.dp))
+                        .background(ParsTheme.palette.primaryAccent)
+                        .clickable(onClick = onAddClick)
+                        .testTag("header_add_button"),
                     contentAlignment = Alignment.Center
                 ) {
-                    ParsPingCrown(
-                        modifier = Modifier.size(24.dp),
-                        primaryColor = ParsTheme.palette.primaryAccent,
-                        glowColor = ParsTheme.palette.glowColor,
-                        secondaryColor = ParsTheme.palette.secondaryDark
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "افزودن اشتراک",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+
+                // Clipboard Paste Button
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(9.dp))
+                        .background(ParsTheme.palette.cardBg)
+                        .border(1.dp, ParsTheme.palette.border, RoundedCornerShape(9.dp))
+                        .clickable(onClick = onClipboardClick)
+                        .testTag("header_clipboard_button"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Assignment,
+                        contentDescription = "چسباندن از کلیپبورد",
+                        tint = ParsTheme.palette.textSecondary,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }

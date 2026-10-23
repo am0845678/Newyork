@@ -371,9 +371,9 @@ private fun HomeScreenContent(
             .statusBarsPadding()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Header Bar (PARS PING crown logo, animated energy line, +, File, Clipboard, "تم دلخواه")
+        // Header Bar (PARS PING crown logo, animated energy line, +, Clipboard, "تم دلخواه")
         HeaderBar(
             vpnStatus = uiState.connectionInfo.status,
             onAddClick = { viewModel.openAddSubscription() },
@@ -382,13 +382,11 @@ private fun HomeScreenContent(
             onThemeClick = { viewModel.openThemeDialog() }
         )
 
-        Spacer(modifier = Modifier.height(4.dp))
-
         // Tactical Protocol & Routing Badge Row
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -401,7 +399,7 @@ private fun HomeScreenContent(
                     .background(ParsTheme.palette.cardBg)
                     .border(1.dp, ParsTheme.palette.glowColor.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
                     .clickable(onClick = onOpenProtocolSelector)
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                    .padding(horizontal = 10.dp, vertical = 6.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -421,8 +419,6 @@ private fun HomeScreenContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
-
         // Sophisticated Cyberpunk Connect Button with Dynamic Ring & Timer
         ConnectButton(
             status = uiState.connectionInfo.status,
@@ -434,25 +430,19 @@ private fun HomeScreenContent(
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Real-time Traffic metrics (Download, Upload, Core Protocol)
         TrafficMetricsCard(
             connectionInfo = uiState.connectionInfo,
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
-
-        Spacer(modifier = Modifier.height(10.dp))
 
         // Real Connection & Core Diagnostics Card (tap to open ConnectionScreen dialog)
         Box(modifier = Modifier.clickable(onClick = onOpenConnectionDialog)) {
             DiagnosticsCard(
                 connectionInfo = uiState.connectionInfo,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
 
         // Current Server Card with measured latency & ping test
         ServerCard(
@@ -465,8 +455,8 @@ private fun HomeScreenContent(
                 }
             },
             modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .padding(bottom = 20.dp)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp)
         )
     }
 }

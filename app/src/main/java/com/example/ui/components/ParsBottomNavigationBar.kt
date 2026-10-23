@@ -41,7 +41,7 @@ fun ParsBottomNavigationBar(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 14.dp, vertical = 6.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(ParsTheme.palette.cardBg)
             .border(1.dp, ParsTheme.palette.border, RoundedCornerShape(16.dp))
@@ -49,36 +49,39 @@ fun ParsBottomNavigationBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
+                .padding(vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             NavItem(
                 icon = Icons.Default.Home,
                 label = MainNavTab.HOME.titleFa,
                 isSelected = currentTab == MainNavTab.HOME,
-                onClick = { onTabSelected(MainNavTab.HOME) }
+                onClick = { onTabSelected(MainNavTab.HOME) },
+                modifier = Modifier.weight(1f)
             )
 
             NavItem(
                 icon = Icons.Default.Dns,
                 label = MainNavTab.CONFIGS.titleFa,
                 isSelected = currentTab == MainNavTab.CONFIGS,
-                onClick = { onTabSelected(MainNavTab.CONFIGS) }
+                onClick = { onTabSelected(MainNavTab.CONFIGS) },
+                modifier = Modifier.weight(1f)
             )
 
             NavItem(
                 icon = Icons.Default.NetworkCheck,
                 label = MainNavTab.NETWORK.titleFa,
                 isSelected = currentTab == MainNavTab.NETWORK,
-                onClick = { onTabSelected(MainNavTab.NETWORK) }
+                onClick = { onTabSelected(MainNavTab.NETWORK) },
+                modifier = Modifier.weight(1f)
             )
 
             NavItem(
                 icon = Icons.Default.Settings,
                 label = MainNavTab.SETTINGS.titleFa,
                 isSelected = currentTab == MainNavTab.SETTINGS,
-                onClick = { onTabSelected(MainNavTab.SETTINGS) }
+                onClick = { onTabSelected(MainNavTab.SETTINGS) },
+                modifier = Modifier.weight(1f)
             )
         }
     }
@@ -89,16 +92,17 @@ private fun NavItem(
     icon: ImageVector,
     label: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val activeColor = ParsTheme.palette.glowColor
     val inactiveColor = ParsTheme.palette.textMuted
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 6.dp),
+            .padding(vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -106,13 +110,15 @@ private fun NavItem(
             imageVector = icon,
             contentDescription = label,
             tint = if (isSelected) activeColor else inactiveColor,
-            modifier = Modifier.size(22.dp)
+            modifier = Modifier.size(20.dp)
         )
         Text(
             text = label,
             color = if (isSelected) activeColor else inactiveColor,
             fontSize = 11.sp,
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+            maxLines = 1,
+            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 2.dp)
         )
     }

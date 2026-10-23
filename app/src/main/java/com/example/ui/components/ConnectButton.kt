@@ -136,17 +136,17 @@ fun ConnectButton(
             }
         }
 
-        Spacer(modifier = Modifier.height(26.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
         // Large Cyberpunk Connection Button
         Box(
-            modifier = Modifier.size(230.dp),
+            modifier = Modifier.size(190.dp),
             contentAlignment = Alignment.Center
         ) {
             // Outermost Glow Ring
             Box(
                 modifier = Modifier
-                    .size(220.dp)
+                    .size(180.dp)
                     .scale(pulseScale)
                     .clip(CircleShape)
                     .background(
@@ -162,7 +162,7 @@ fun ConnectButton(
             // Outer Metallic Radar Ring
             Box(
                 modifier = Modifier
-                    .size(184.dp)
+                    .size(154.dp)
                     .clip(CircleShape)
                     .border(
                         width = 1.2.dp,
@@ -178,18 +178,18 @@ fun ConnectButton(
             // Inner Intermediate Dark Ring
             Box(
                 modifier = Modifier
-                    .size(164.dp)
+                    .size(136.dp)
                     .clip(CircleShape)
                     .background(ParsTheme.palette.background)
                     .border(
-                        width = 2.dp,
+                        width = 1.5.dp,
                         color = if (isConnected) ParsTheme.palette.connectedGreen.copy(alpha = 0.3f)
                                 else ParsTheme.palette.dimColor,
                         shape = CircleShape
                     )
             )
 
-            // Central Matte Core Button (140dp) with Dynamic Gradient
+            // Central Matte Core Button (120dp) with Dynamic Gradient
             val coreGradient = when {
                 isConnected -> Brush.radialGradient(
                     colors = listOf(
@@ -223,7 +223,7 @@ fun ConnectButton(
 
             Box(
                 modifier = Modifier
-                    .size(140.dp)
+                    .size(120.dp)
                     .scale(buttonScale.value)
                     .clip(CircleShape)
                     .background(coreGradient)
@@ -252,7 +252,7 @@ fun ConnectButton(
             ) {
                 if (isConnecting) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(54.dp),
+                        modifier = Modifier.size(46.dp),
                         color = ParsTheme.palette.textPrimary,
                         strokeWidth = 3.dp
                     )
@@ -261,13 +261,13 @@ fun ConnectButton(
                         imageVector = Icons.Default.PowerSettingsNew,
                         contentDescription = "اتصال یا قطع VPN",
                         tint = if (isConnected) ParsTheme.palette.textPrimary else ParsTheme.palette.glowColor,
-                        modifier = Modifier.size(58.dp)
+                        modifier = Modifier.size(48.dp)
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Tactical Connection Timer (00:00:00)
         Box(

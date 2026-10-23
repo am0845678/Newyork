@@ -92,84 +92,90 @@ fun ConfigsScreen(
             Text(
                 text = "مدیریت کانفیگ‌ها (${uiState.configs.size})",
                 color = ParsTheme.palette.textPrimary,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Black
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Black,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false)
             )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
                 // Add Config (+)
-                IconButton(
-                    onClick = { viewModel.openAddSubscription() },
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(34.dp)
                         .clip(CircleShape)
                         .background(ParsTheme.palette.primaryAccent)
+                        .clickable { viewModel.openAddSubscription() },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "افزودن کانفیگ",
                         tint = Color.White,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
-
                 // Paste from Clipboard
-                IconButton(
-                    onClick = {
-                        val clip = clipboardManager.getText()?.text
-                        viewModel.handleClipboardUrl(clip)
-                    },
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(34.dp)
                         .clip(CircleShape)
                         .background(ParsTheme.palette.cardBg)
                         .border(1.dp, ParsTheme.palette.border, CircleShape)
+                        .clickable {
+                            val clip = clipboardManager.getText()?.text
+                            viewModel.handleClipboardUrl(clip)
+                        },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentPaste,
                         contentDescription = "جایگذاری از کلیپبورد",
                         tint = ParsTheme.palette.glowColor,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
-
                 // Manual Form
-                IconButton(
-                    onClick = { viewModel.openManualAddDialog() },
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(34.dp)
                         .clip(CircleShape)
                         .background(ParsTheme.palette.cardBg)
                         .border(1.dp, ParsTheme.palette.border, CircleShape)
+                        .clickable { viewModel.openManualAddDialog() },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = "افزودن دستی",
                         tint = ParsTheme.palette.textPrimary,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(8.dp))
-
                 // Import File
-                IconButton(
-                    onClick = onImportFileClick,
+                Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(34.dp)
                         .clip(CircleShape)
                         .background(ParsTheme.palette.cardBg)
                         .border(1.dp, ParsTheme.palette.border, CircleShape)
+                        .clickable(onClick = onImportFileClick),
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.FolderOpen,
                         contentDescription = "فایل کانفیگ",
                         tint = ParsTheme.palette.textSecondary,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
@@ -518,14 +524,17 @@ private fun ConfigItemCard(
                 }
 
                 // Quick Connect button & Actions
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
+                            .clip(RoundedCornerShape(7.dp))
                             .background(if (isConnected) ParsTheme.palette.connectedGreen.copy(alpha = 0.2f) else ParsTheme.palette.primaryAccent.copy(alpha = 0.2f))
-                            .border(1.dp, if (isConnected) ParsTheme.palette.connectedGreen else ParsTheme.palette.glowColor, RoundedCornerShape(6.dp))
+                            .border(1.dp, if (isConnected) ParsTheme.palette.connectedGreen else ParsTheme.palette.glowColor, RoundedCornerShape(7.dp))
                             .clickable(onClick = onConnect)
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(horizontal = 9.dp, vertical = 5.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
@@ -544,32 +553,57 @@ private fun ConfigItemCard(
                         }
                     }
 
-                    Spacer(modifier = Modifier.width(6.dp))
-
-                    IconButton(onClick = onShare, modifier = Modifier.size(28.dp)) {
+                    // Share Link
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(RoundedCornerShape(7.dp))
+                            .background(ParsTheme.palette.background)
+                            .border(0.8.dp, ParsTheme.palette.border, RoundedCornerShape(7.dp))
+                            .clickable(onClick = onShare),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Share,
                             contentDescription = "کپی لینک کانفیگ",
                             tint = ParsTheme.palette.textSecondary,
-                            modifier = Modifier.size(15.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                     }
 
-                    IconButton(onClick = onEdit, modifier = Modifier.size(28.dp)) {
+                    // Edit Config
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(RoundedCornerShape(7.dp))
+                            .background(ParsTheme.palette.background)
+                            .border(0.8.dp, ParsTheme.palette.border, RoundedCornerShape(7.dp))
+                            .clickable(onClick = onEdit),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "ویرایش",
                             tint = ParsTheme.palette.textSecondary,
-                            modifier = Modifier.size(15.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                     }
 
-                    IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
+                    // Delete Config
+                    Box(
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clip(RoundedCornerShape(7.dp))
+                            .background(ParsTheme.palette.background)
+                            .border(0.8.dp, ParsTheme.palette.border, RoundedCornerShape(7.dp))
+                            .clickable(onClick = onDelete),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "حذف",
-                            tint = ParsTheme.palette.errorRed.copy(alpha = 0.7f),
-                            modifier = Modifier.size(15.dp)
+                            tint = ParsTheme.palette.errorRed.copy(alpha = 0.8f),
+                            modifier = Modifier.size(14.dp)
                         )
                     }
                 }
